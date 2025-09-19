@@ -1,6 +1,6 @@
 # Memory Card Matching Game
 
-A fun and interactive memory card matching game built with HTML, CSS, and JavaScript.
+A fun and interactive memory card matching game built with HTML, CSS, and JavaScript utilizing Cursor AI's Agent.
 
 ## Features
 
