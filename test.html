@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Test Suite HTML - Provides a user-friendly interface for running game tests -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Card Game - Test Suite</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        .test-button:hover {
+            background: #5a6fd8;
+        }
+        .test-results {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+        }
+        .test-output {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Memory Card Game Test Suite</h1>
+        
+        <div class="description">
+            <p>This test suite validates all the functionality of the Memory Card Game including:</p>
+            <ul>
+                <li><strong>Difficulty Configurations:</strong> Tests all three difficulty levels and their settings</li>
+                <li><strong>Card Shuffling:</strong> Validates the Fisher-Yates shuffle algorithm</li>
+                <li><strong>Game State Management:</strong> Tests initialization and reset functionality</li>
+                <li><strong>Score Calculation:</strong> Verifies scoring system works correctly</li>
+                <li><strong>Leaderboard:</strong> Tests local storage and high score detection</li>
+                <li><strong>Audio System:</strong> Validates sound effect initialization</li>
+                <li><strong>Card Matching:</strong> Tests the core game logic</li>
+                <li><strong>Game Completion:</strong> Ensures proper game ending conditions</li>
+            </ul>
+        </div>
+        
+        <button class="test-button" onclick="runTests()">🚀 Run All Tests</button>
+        <button class="test-button" onclick="clearResults()">🗑️ Clear Results</button>
+        
+        <div id="test-results" class="test-results" style="display: none;">
+            <h3>Test Results:</h3>
+            <div id="test-output" class="test-output"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="test.js"></script>
+    <script>
+        function runTests() {
+            const resultsDiv = document.getElementById('test-results');
+            const outputDiv = document.getElementById('test-output');
+            
+            resultsDiv.style.display = 'block';
+            outputDiv.textContent = '';
+            
+            // Capture console output
+            const originalLog = console.log;
+            const logs = [];
+            console.log = function(...args) {
+                logs.push(args.join(' '));
+                originalLog.apply(console, args);
+            };
+            
+            try {
+                const testSuite = new MemoryGameTests();
+                const success = testSuite.runAllTests();
+                
+                // Display results
+                outputDiv.textContent = logs.join('\n');
+                
+                if (success) {
+                    outputDiv.style.borderLeft = '4px solid #28a745';
+                    outputDiv.style.backgroundColor = '#d4edda';
+                    outputDiv.style.color = '#155724';
+                } else {
+                    outputDiv.style.borderLeft = '4px solid #dc3545';
+                    outputDiv.style.backgroundColor = '#f8d7da';
+                    outputDiv.style.color = '#721c24';
+                }
+                
+            } catch (error) {
+                outputDiv.textContent = `Test suite error: ${error.message}`;
+                outputDiv.style.borderLeft = '4px solid #dc3545';
+                outputDiv.style.backgroundColor = '#f8d7da';
+                outputDiv.style.color = '#721c24';
+            } finally {
+                console.log = originalLog;
+            }
+        }
+        
+        function clearResults() {
+            document.getElementById('test-results').style.display = 'none';
+            document.getElementById('test-output').textContent = '';
+        }
+        
+        // Auto-run tests on page load (optional)
+        // window.addEventListener('load', () => {
+        //     setTimeout(runTests, 1000);
+        // });
+    </script>
+</body>
+</html>
